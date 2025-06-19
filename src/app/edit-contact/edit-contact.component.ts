@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ContactsService } from '../contacts/contacts.service';
 import { Router } from '@angular/router';
-import { Phone } from '../contacts/contact.model';
 
 @Component({
   templateUrl: './edit-contact.component.html',
@@ -13,27 +12,34 @@ export class EditContactComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     private contactsService: ContactsService,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder
   ) { }
-
-  contactForm = new FormGroup({
-    id: new FormControl(),
-    firstName: new FormControl(),
-    lastName: new FormControl(),
-    dateOfBirth: new FormControl(),
-    favoritesRanking: new FormControl(),
-    phone: new FormGroup({
-      phoneNumber: new FormControl(),
-      phoneType: new FormControl()
-    }),
-    address: new FormGroup({
-      streetAddress: new FormControl(),
-      city: new FormControl(),
-      state: new FormControl(),
-      postalCode: new FormControl(),
-      addressType: new FormControl(),
-    })
-  });
+//using form builder with each form control match the data property so it will be easier to set the value
+//providing default values for our FormControls and it is inferring their data types, you can see that for most of our controls, the type is string or null. 
+// But that doesn't actually match our contact interface because only dateOfBirth and favoritesRanking are allowed to be null. So one thing that's nice about the formBuilder is that we can tell it to make all of its controls nullable by calling fb.nonNullable.group. 
+// This will make all of the controls inside this group non‑nullable, except for these two, where we're specifically indicating we want to allow nulls
+  contactForm = this.fb.nonNullable.group(
+    {
+      id: '',
+      firstName: '',
+      lastName: '',
+      dateOfBirth: <Date | null>(null),
+      favoritesRanking: <number | null>null,
+      phone: this.fb.nonNullable.group({
+        phoneNumber: '',
+        phoneType: ''
+      }),
+      address: this.fb.nonNullable.group({
+        streetAddress: '',
+        city: '',
+        state: '',
+        postalCode: '',
+        addressType: '',
+      })
+    }
+  );
+  
 
   ngOnInit() {
     const contactId = this.route.snapshot.params['id'];
@@ -42,10 +48,17 @@ export class EditContactComponent implements OnInit {
       (contact) => {
         if (!contact)
           return
+        //since the shape of our contact interface matches the shape of our form model, I can just pass in our contact right here. And this single contactForm.setValue call replaces all of these calls down here
+        this.contactForm.setValue(contact);  
+        
+        //please note a form model has another method called patchValue that allows you to set values of only a few properties on your form model
+        //this.contactForm.patchValue({firstName: contact.firstName})
+
+        //set value for each form control
         //this.contactForm.controls.firstName.setValue(contact.firstName)
         //alternatively
 
-        this.contactForm.setValue({
+      /*  this.contactForm.setValue({
           id: contact.id,//since this is an identifier we wont add it to the form
           firstName: contact.firstName,
           lastName: contact.lastName,
@@ -62,7 +75,7 @@ export class EditContactComponent implements OnInit {
             postalCode: contact.address.postalCode,
             addressType: contact.address.addressType,
           }
-       })
+       })*/
         // this.contactForm.controls.firstName.setValue(contact.firstName);
         // this.contactForm.controls.id.setValue(contact.id)
         // this.contactForm.controls.lastName.setValue(contact.lastName);
