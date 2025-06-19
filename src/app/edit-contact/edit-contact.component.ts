@@ -3,13 +3,15 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ContactsService } from '../contacts/contacts.service';
 import { Router } from '@angular/router';
+import { AddressTypeValues, PhoneTypes } from '../contacts/contact.model';
 
 @Component({
   templateUrl: './edit-contact.component.html',
   styleUrls: ['./edit-contact.component.css']
 })
 export class EditContactComponent implements OnInit {
-
+  phoneTypes = PhoneTypes;
+  addressTypes = AddressTypeValues;
   constructor(private route: ActivatedRoute,
     private contactsService: ContactsService,
     private router: Router,
@@ -22,6 +24,7 @@ export class EditContactComponent implements OnInit {
   contactForm = this.fb.nonNullable.group(
     {
       id: '',
+      personal:false,
       firstName: '',
       lastName: '',
       dateOfBirth: <Date | null>(null),
@@ -36,7 +39,8 @@ export class EditContactComponent implements OnInit {
         state: '',
         postalCode: '',
         addressType: '',
-      })
+      }),
+      notes:''
     }
   );
   
@@ -114,6 +118,8 @@ export class EditContactComponent implements OnInit {
     //this.contactForm.getRawValue() ----This will force my FormGroup to return all properties even if their associated input elements are disabled.
     // or 
     // this.contactForm.value
+
+    console.log(this.contactForm.controls.dateOfBirth.value, typeof(this.contactForm.controls.dateOfBirth.value));
     this.contactsService.saveContact(this.contactForm.getRawValue()).subscribe({
       next: () => this.router.navigate(['/contacts'])
     }

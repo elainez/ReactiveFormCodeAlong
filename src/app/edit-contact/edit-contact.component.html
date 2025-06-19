@@ -6,10 +6,17 @@
     <section>
       <nav>Name/Info</nav>
       <div>
+        
         <input formControlName="firstName" placeholder="First Name" />
         <input formControlName="lastName" placeholder="Last Name" />
-        <input formControlName="dateOfBirth" placeholder="Date of Birth" />
-        <input formControlName="favoritesRanking" placeholder="Favorites Ranking" />
+        <input formControlName="dateOfBirth" placeholder="Date of Birth" type="date"/>
+        <!--<input formControlName="favoritesRanking" placeholder="Favorites Ranking" type="number"/> ensure this is a number, otherwise the default ControlValueAccesser will updates its formcontrol with a string value; a good practice in html forms 
+        and it will display the appropriate type in the input type on mobile device;        it also give increment and decrement selectors -->
+        <div><span>Favorite Ranking</span>
+          <input formControlName="favoritesRanking" placeholder="Favorites Ranking" type="range" min="0" max="5" />
+          <span>{{contactForm.controls.favoritesRanking.value}}</span>
+        </div>
+        <div><input type="checkbox" formControlName="personal" />Personal</div>
       </div>
     </section>
     <section>
@@ -20,9 +27,12 @@
           <img src="/assets/plus-grey-blue.png" class="add" />
         </div>
         <div class="radio">
-          <input type="radio" formControlName="phoneType" value="mobile"> Mobile
+          <!-- <input type="radio" formControlName="phoneType" value="mobile"> Mobile
           <input type="radio" formControlName="phoneType" value="work"> Work
-          <input type="radio" formControlName="phoneType" value="other"> Other
+          <input type="radio" formControlName="phoneType" value="other"> Other -->
+          <span *ngFor="let type of phoneTypes">
+            <input type="radio" [value]="type.value" formControlName="phoneType"> {{type.title}}
+          </span>
         </div>
       </div>
     </section>
@@ -38,11 +48,18 @@
           <input formControlName="state" placeholder="State/Region" />
           <input formControlName="postalCode" placeholder="Zip/Postal Code" />
           <select formControlName="addressType">
-            <option value="home">Home</option>
+            <!-- <option value="home">Home</option>
             <option  value="work">Work</option>
-            <option  value="mobile">Other</option>
+            <option  value="mobile">Other</option> -->
+            <option *ngFor="let type of addressTypes" [value]="type.value">{{type.title}}</option>
           </select>
         </div>
+      </div>
+    </section>
+    <section>
+      <nav>Notes</nav>
+      <div>
+        <textarea formControlName="notes" placeholder="Notes" rows="5"></textarea>
       </div>
     </section>
     <div class="buttons">
