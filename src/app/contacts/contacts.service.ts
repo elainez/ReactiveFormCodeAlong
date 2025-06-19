@@ -35,12 +35,13 @@ export class ContactsService {
   getAllContacts(): Observable<Contact[]> {
     return this.http.get<Contact[]>('api/contacts');
   }
-
-  saveContact(contact: Contact): Observable<Contact> {
+//partial is a special data type in TypeScript that allows you to accept objects that do not fully implement their interface. 
+// The reason why I like this approach in our current use case is because in a contacts app we don't really expect anyone to fill out every field for a contact. So working with partial objects makes sense
+  saveContact(contact: Partial<Contact>): Observable<Contact> {
     const headers = { headers: { 'Content-Type': 'application/json' } };
 
     if (!contact.id || contact.id === '') {
-      let newContact: Contact = { ...contact, id: nanoid(5) };
+      let newContact: Partial<Contact> = { ...contact, id: nanoid(5) };
       return this.http.post<Contact>('api/contacts/', newContact, headers)
     }
     else

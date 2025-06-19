@@ -2,52 +2,63 @@
   <h1 class="header">
     Edit Contact
   </h1>
-  <form>
+  <form [formGroup]="contactForm" (ngSubmit)="saveContact()">
     <section>
       <nav>Name/Info</nav>
       <div>
-        <input placeholder="First Name" />
-        <input placeholder="Last Name" />
-        <input placeholder="Date of Birth" />
-        <input placeholder="Favorites Ranking" />
+        <input formControlName="firstName" placeholder="First Name" />
+        <input formControlName="lastName" placeholder="Last Name" />
+        <input formControlName="dateOfBirth" placeholder="Date of Birth" />
+        <input formControlName="favoritesRanking" placeholder="Favorites Ranking" />
       </div>
     </section>
     <section>
       <nav>Phone</nav>
-      <div class="flex-column">
+      <div class="flex-column" formGroupName="phone">
         <div class="flex-group">
-          <input placeholder="Phone" />
+          <input placeholder="Phone" formControlName="phoneNumber" />
           <img src="/assets/plus-grey-blue.png" class="add" />
         </div>
         <div class="radio">
-          <input type="radio" value="mobile"> Mobile
-          <input type="radio" value="work"> Work
-          <input type="radio" value="other"> Other
+          <input type="radio" formControlName="phoneType" value="mobile"> Mobile
+          <input type="radio" formControlName="phoneType" value="work"> Work
+          <input type="radio" formControlName="phoneType" value="other"> Other
         </div>
       </div>
     </section>
     <section>
       <nav>Address</nav>
       <div>
-        <div class="address">
+        <div class="address" formGroupName="address">
           <div class="flex-group">
             <input placeholder="Address" />
             <img src="/assets/plus-grey-blue.png" class="add" />
           </div>
-          <input placeholder="City" />
-          <input placeholder="State/Region" />
-          <input placeholder="Zip/Postal Code" />
-          <select>
+          <input formControlName="city" placeholder="City" />
+          <input formControlName="state" placeholder="State/Region" />
+          <input formControlName="postalCode" placeholder="Zip/Postal Code" />
+          <select formControlName="addressType">
             <option value="home">Home</option>
-            <option value="work">Work</option>
-            <option value="mobile">Other</option>
+            <option  value="work">Work</option>
+            <option  value="mobile">Other</option>
           </select>
         </div>
       </div>
     </section>
+    <div class="buttons">
+      <button class="secondary">Cancel</button>
+      <button type="submit" class="primary">Save</button>
+  </div>
   </form>
+ 
+</div>
+
+
+<!--it is not the right way to submit a form. We should instead be using a submit button and have a submit action on our actual form element. 
+That is the correct way to wire up a form according to HTML standards. It also allows the user to submit the form by hitting enter(with the form being focused) in addition to clicking the button, which is more accessible.
+so the button type should be submit; the method should be on the form element
   <div class="buttons">
     <button class="secondary">Cancel</button>
     <button class="primary" (click)="saveContact()">Save</button>
-  </div>
-</div>
+
+-->
