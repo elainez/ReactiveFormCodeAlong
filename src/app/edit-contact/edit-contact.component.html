@@ -13,7 +13,7 @@
         <em *ngIf="firstName.touched && firstName.errors?.['whitespace']">First Name cannot be empty or just spaces</em>
         <input formControlName="lastName" placeholder="Last Name" />
         <!-- <input type="date" formControlName="dateOfBirth" placeholder="Date of Birth" [value]="contactForm.controls.dateOfBirth.value | date:'yyyy-MM-dd'"/> -->
-          <input type="date" mydateinput formControlName="dateOfBirth" placeholder="Date of Birth" />
+          <input type="date" formControlName="dateOfBirth" placeholder="Date of Birth" />
         <!--<input formControlName="favoritesRanking" placeholder="Favorites Ranking" type="number"/> ensure this is a number, otherwise the default ControlValueAccesser will updates its formcontrol with a string value; a good practice in html forms 
         and it will display the appropriate type in the input type on mobile device;        it also give increment and decrement selectors -->
         <div><span>Favorite Ranking</span>
