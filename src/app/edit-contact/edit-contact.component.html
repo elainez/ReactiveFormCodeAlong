@@ -6,8 +6,11 @@
     <section>
       <nav>Name/Info</nav>
       <div>
-        
-        <input formControlName="firstName" placeholder="First Name" />
+        <input formControlName="firstName" [class.error]="firstName.touched && firstName.invalid" placeholder="First Name" />
+        <em *ngIf="firstName.touched && firstName.errors?.['required']">Please enter a First Name</em>
+          <!--errors.minLength. Notice that that is all lowercase-->
+        <em *ngIf="firstName.touched && firstName.errors?.['minlength']">First Name must be at least 3 characters</em>
+        <em *ngIf="firstName.touched && firstName.errors?.['whitespace']">First Name cannot be empty or just spaces</em>
         <input formControlName="lastName" placeholder="Last Name" />
         <input formControlName="dateOfBirth" placeholder="Date of Birth" type="date"/>
         <!--<input formControlName="favoritesRanking" placeholder="Favorites Ranking" type="number"/> ensure this is a number, otherwise the default ControlValueAccesser will updates its formcontrol with a string value; a good practice in html forms 
@@ -39,9 +42,13 @@
     <section>
       <nav>Address</nav>
       <div>
-        <div class="address" formGroupName="address">
+        <div class="address" formGroupName="address" 
+          [class.error]="contactForm.controls.address.invalid && contactForm.controls.address.dirty">
           <div class="flex-group">
-            <input placeholder="Address" />
+            <input placeholder="Address" formControlName="streetAddress" />
+            <div>
+              <em *ngIf="streetAddress.touched && streetAddress.errors?.['whitespace']">Street Address cannot be empty or just spaces</em>
+            </div>
             <img src="/assets/plus-grey-blue.png" class="add" />
           </div>
           <input formControlName="city" placeholder="City" />
@@ -53,13 +60,17 @@
             <option  value="mobile">Other</option> -->
             <option *ngFor="let type of addressTypes" [value]="type.value">{{type.title}}</option>
           </select>
+          <div>
+            <em *ngIf="contactForm.controls.address.invalid && contactForm.controls.address.dirty">Incompleted Address</em>
+          </div>
         </div>
       </div>
     </section>
     <section>
       <nav>Notes</nav>
       <div>
-        <textarea formControlName="notes" placeholder="Notes" rows="5"></textarea>
+        <textarea formControlName="notes" [class.error]="notes.invalid" placeholder="Notes" rows="5"></textarea>
+        <em *ngIf="notes.errors?.['restrictedwords']">Restricted Word found: {{notes.errors?.['restrictedwords']}}</em>
       </div>
     </section>
     <div class="buttons">

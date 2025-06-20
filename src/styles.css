@@ -4,9 +4,17 @@
   --font-color-dark-bg: #fff;
   --color-secondary: #aaa;
   --color-secondary-light: #ccc;
+  /*This sets the value of the variable --color-error globally, and now any element that uses var(--color-error) will inherit that color.*/
   --color-error: #B22222;
   --color-disabled-error: #F88888;
 }
+/*Using var() has many benefits:
+
+Centralized theming: You define your colors (or other values) once and reuse them.
+
+Easy updates: Change the value in one place instead of updating many CSS rules.
+
+Dynamic styling: You can override variables for dark/light modes or per component.*/
 
 body {
   font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;

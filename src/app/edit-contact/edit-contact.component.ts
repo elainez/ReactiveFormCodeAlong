@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ContactsService } from '../contacts/contacts.service';
 import { Router } from '@angular/router';
 import { AddressTypeValues, PhoneTypes } from '../contacts/contact.model';
+import { noWhiteSpaceValidator } from '../validators/no-whiltespace.validator';
+import { restrictedWordValidator } from '../validators/restriction-words.validator';
 
 @Component({
   templateUrl: './edit-contact.component.html',
@@ -24,8 +26,8 @@ export class EditContactComponent implements OnInit {
   contactForm = this.fb.nonNullable.group(
     {
       id: '',
-      personal:false,
-      firstName: '',
+      personal: false,
+      firstName: ['', [Validators.required, Validators.minLength(3),noWhiteSpaceValidator]],
       lastName: '',
       dateOfBirth: <Date | null>(null),
       favoritesRanking: <number | null>null,
@@ -34,13 +36,13 @@ export class EditContactComponent implements OnInit {
         phoneType: ''
       }),
       address: this.fb.nonNullable.group({
-        streetAddress: '',
-        city: '',
-        state: '',
-        postalCode: '',
-        addressType: '',
+        streetAddress: ['', [Validators.required, noWhiteSpaceValidator]],
+        city: ['', Validators.required],
+        state: ['', Validators.required],
+        postalCode: ['', Validators.required],
+        addressType: ['', Validators.required],
       }),
-      notes:''
+      notes: ['', restrictedWordValidator(['foo','tie'])]
     }
   );
   
@@ -114,6 +116,21 @@ export class EditContactComponent implements OnInit {
   //       })
   //   ));
   // }
+
+  //add a getter property named firstName that simply returns this.contactForm.controls.firstName.
+  //so it wont be too lengthy in the template
+  get firstName() {
+    return this.contactForm.controls.firstName;
+  }
+
+  get streetAddress(){
+    return this.contactForm.controls.address.controls.streetAddress;
+  }
+
+  get notes(){
+    return this.contactForm.controls.notes;
+  }
+
   saveContact() {
     //this.contactForm.getRawValue() ----This will force my FormGroup to return all properties even if their associated input elements are disabled.
     // or 
@@ -125,4 +142,6 @@ export class EditContactComponent implements OnInit {
     }
     )
   }
+
+ 
 }
