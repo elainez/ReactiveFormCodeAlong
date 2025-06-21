@@ -56,7 +56,7 @@ export class DateValueAccessorDirective implements ControlValueAccessor{
   writeValue(newValue: any): void {
     //yyyy-mm-dd
     //iso: yyyy-mm-ddThh:mm:ss.000Z
-    console.log('writevalue', newValue);
+    //console.log('writevalue', newValue);
     if (newValue instanceof Date) {
       console.log('writevalue', newValue);
       this.element.nativeElement.value = newValue.toISOString().split('T')[0];

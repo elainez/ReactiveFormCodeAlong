@@ -26,6 +26,7 @@ export class EditContactComponent implements OnInit {
   contactForm = this.fb.nonNullable.group(
     {
       id: '',
+      icon:'',
       personal: false,
       firstName: ['', [Validators.required, Validators.minLength(3),noWhiteSpaceValidator]],
       lastName: '',
@@ -55,7 +56,7 @@ export class EditContactComponent implements OnInit {
         if (!contact)
           return
         //since the shape of our contact interface matches the shape of our form model, I can just pass in our contact right here. And this single contactForm.setValue call replaces all of these calls down here
-        console.log(contact.dateOfBirth, typeof(this.contactForm.controls.dateOfBirth.value));
+       // console.log(contact.dateOfBirth, typeof(this.contactForm.controls.dateOfBirth.value));
         this.contactForm.setValue(contact);  
         
         //please note a form model has another method called patchValue that allows you to set values of only a few properties on your form model

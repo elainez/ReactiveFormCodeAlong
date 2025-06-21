@@ -9,13 +9,15 @@ import { ContactListComponent } from './contact-list/contact-list.component';
 import { EditContactComponent } from './edit-contact/edit-contact.component';
 import { InMemoryContactsApi } from './contacts/in-memory-contacts.service';
 import { DateValueAccessorDirective } from 'src/directives/date-value-accessor.directive';
+import { ProfileIconSelectorComponent } from '../profileIconSelector/profile-icon-selector/profile-icon-selector.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ContactListComponent,
     EditContactComponent,
-    DateValueAccessorDirective
+    DateValueAccessorDirective,
+    ProfileIconSelectorComponent
   ],
   imports: [
     BrowserModule,
