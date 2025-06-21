@@ -6,7 +6,7 @@ export class InMemoryContactsApi implements InMemoryDbService {
     let contacts: Contact[] = [
       {
         id: '5CehW',
-        icon: '',
+        icon: 'person-01.png',
         personal: true,
         firstName: 'Percival',
         lastName: 'Doodleplumb',
@@ -17,18 +17,26 @@ export class InMemoryContactsApi implements InMemoryDbService {
           { phoneNumber: '335-125-5987', phoneType: 'work' },
           { phoneNumber: '125-598-3357', phoneType: 'home' }
         ],
-        address: {
+        addresses: [{
           streetAddress: '777 Whimsy Lane',
           city: 'Gleeberg City',
           state: 'Colohoma',
           postalCode: 'A4321',
           addressType: 'home',
         },
+        {
+          streetAddress: '666 Grove Lane',
+          city: 'Kansas City',
+          state: 'Colohoma',
+          postalCode: '10321',
+          addressType: 'work',
+        }
+      ],
         notes: "this si stheh lkhdajfkl hjhdf "
       },
       {
         id: 'A6rwe',
-        icon: '',
+        icon: 'person-08.png',
         personal: false,
         firstName: 'Mortimer',
         lastName: 'Flungford',
@@ -38,18 +46,26 @@ export class InMemoryContactsApi implements InMemoryDbService {
           { phoneNumber: '555-877-5678', phoneType: 'other' },
           { phoneNumber: '678-555-8775', phoneType: 'work' }
         ],
-        address: {
+        addresses: [{
           streetAddress: '543 Lullaby Lane',
           city: 'Sleepytown',
           state: 'Ulaska',
           postalCode: 'F2231',
           addressType: 'other'
         },
+        {
+          streetAddress: '666 Grove Lane',
+          city: 'Kansas City',
+          state: 'Colohoma',
+          postalCode: '10321',
+          addressType: 'work',
+        }
+      ],
         notes: "this si stheh lkhdajfkl hjhdf "
       },
       {
         id: '3bNGA',
-        icon: '',
+        icon: 'person-09.png',
         personal: false,
         firstName: 'Wanda',
         lastName: 'Giggleworth',
@@ -59,13 +75,21 @@ export class InMemoryContactsApi implements InMemoryDbService {
           { phoneNumber: '555-123-4567', phoneType: 'other' },
           { phoneNumber: '456-555-7123', phoneType: 'home' },
         ],
-        address: {
+        addresses: [{
           streetAddress: '123 Merriment Avenue',
           city: 'Dorado City',
           state: 'Mezona',
           postalCode: 'Z2345',
           addressType: 'work'
         },
+        {
+          streetAddress: '666 Grove Lane',
+          city: 'Kansas City',
+          state: 'Colohoma',
+          postalCode: '10321',
+          addressType: 'home',
+        }
+      ],
         notes: "this si stheh lkhdajfkl hjhdf "
       },
     ]

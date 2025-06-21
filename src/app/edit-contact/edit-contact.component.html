@@ -27,7 +27,7 @@
     <section>
       <nav>Phone</nav>
       <div formArrayName="phones">
-        <img src="/assets/plus-grey-blue.png" class="add" (click)="addPhoneGroup()"/>
+        <span><img src="/assets/plus-grey-blue.png" class="add" (click)="addPhoneGroup()"/>Add Phone</span>
         <div *ngFor="let phone of contactForm.controls.phones.controls; let i = index" [formGroupName]="i" class="flex-column">
           <div class="flex-group">
             <input placeholder="Phone" formControlName="phoneNumber" />
@@ -45,15 +45,16 @@
     </section>
     <section>
       <nav>Address</nav>
-      <div>
-        <div class="address" formGroupName="address" 
-          [class.error]="contactForm.controls.address.invalid && contactForm.controls.address.dirty">
+      <div formArrayName="addresses">
+       <span> <img src="/assets/plus-grey-blue.png" class="add" (click)="addAddressGroup()"/>Add Address</span>
+        <div class="address"  *ngFor="let address of contactForm.controls.addresses.controls; let i = index" [formGroupName]="i" 
+          [class.error]="address.invalid && address.dirty">
           <div class="flex-group">
             <input placeholder="Address" formControlName="streetAddress" />
             <div>
-              <em *ngIf="streetAddress.touched && streetAddress.errors?.['whitespace']">Street Address cannot be empty or just spaces</em>
+              <em *ngIf="address.get('streetAddress')?.touched && address.get('streetAddress')?.errors?.['whitespace']">Street Address cannot be empty or just spaces</em>
             </div>
-            <img src="/assets/plus-grey-blue.png" class="add" />
+            
           </div>
           <input formControlName="city" placeholder="City" />
           <input formControlName="state" placeholder="State/Region" />
@@ -65,7 +66,7 @@
             <option *ngFor="let type of addressTypes" [value]="type.value">{{type.title}}</option>
           </select>
           <div>
-            <em *ngIf="contactForm.controls.address.invalid && contactForm.controls.address.dirty">Incompleted Address</em>
+            <em *ngIf="address.invalid && address.dirty">Incompleted Address</em>
           </div>
         </div>
       </div>

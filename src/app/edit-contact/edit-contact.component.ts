@@ -33,13 +33,7 @@ export class EditContactComponent implements OnInit {
       dateOfBirth: <Date | null>(null),
       favoritesRanking: <number | null>null,
       phones: this.fb.array([this.createPhoneGroup()]),
-      address: this.fb.nonNullable.group({
-        streetAddress: ['', [Validators.required, noWhiteSpaceValidator]],
-        city: ['', Validators.required],
-        state: ['', Validators.required],
-        postalCode: ['', Validators.required],
-        addressType: ['', Validators.required],
-      }),
+      addresses: this.fb.array([this.createAddressGroup()]),
       notes: ['', restrictedWordValidator(['foo', 'tie'])]
     }
   );
@@ -57,7 +51,9 @@ export class EditContactComponent implements OnInit {
         for (let i = 1; i < contact.phones.length; i++) {
           this.contactForm.controls.phones.push(this.createPhoneGroup());
         }
-
+        for (let i= 1; i< contact.addresses.length; i++) {
+          this.contactForm.controls.addresses.push(this.createAddressGroup());
+        }
         this.contactForm.setValue(contact);
 
         //please note a form model has another method called patchValue that allows you to set values of only a few properties on your form model
@@ -127,7 +123,7 @@ export class EditContactComponent implements OnInit {
   }
 
   get streetAddress() {
-    return this.contactForm.controls.address.controls.streetAddress;
+    return this.contactForm.controls.addresses.controls[0].controls.streetAddress;
   }
 
   get notes() {
@@ -144,6 +140,21 @@ export class EditContactComponent implements OnInit {
   addPhoneGroup(){
     this.contactForm.controls.phones.controls.push(this.createPhoneGroup());
   }
+
+  createAddressGroup(){
+    return this.fb.nonNullable.group({
+        streetAddress: ['', [Validators.required, noWhiteSpaceValidator]],
+        city: ['', Validators.required],
+        state: ['', Validators.required],
+        postalCode: ['', Validators.required],
+        addressType: ['', Validators.required],
+      })
+  }
+
+  addAddressGroup(){
+    this.contactForm.controls.addresses.controls.push(this.createAddressGroup());
+  }
+  
   saveContact() {
     //this.contactForm.getRawValue() ----This will force my FormGroup to return all properties even if their associated input elements are disabled.
     // or 
