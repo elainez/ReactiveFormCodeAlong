@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { AddressTypeValues, PhoneTypes } from '../contacts/contact.model';
 import { noWhiteSpaceValidator } from '../validators/no-whiltespace.validator';
 import { restrictedWordValidator } from '../validators/restriction-words.validator';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   templateUrl: './edit-contact.component.html',
@@ -41,7 +42,10 @@ export class EditContactComponent implements OnInit {
 
   ngOnInit() {
     const contactId = this.route.snapshot.params['id'];
-    if (!contactId) return
+    if (!contactId) {
+      
+      return;
+    }
     this.contactsService.getContact(contactId).subscribe(
       (contact) => {
         if (!contact)
@@ -55,7 +59,7 @@ export class EditContactComponent implements OnInit {
           this.contactForm.controls.addresses.push(this.createAddressGroup());
         }
         this.contactForm.setValue(contact);
-
+        
         //please note a form model has another method called patchValue that allows you to set values of only a few properties on your form model
         //this.contactForm.patchValue({firstName: contact.firstName})
 
@@ -130,11 +134,31 @@ export class EditContactComponent implements OnInit {
     return this.contactForm.controls.notes;
   }
 
+
+  stringifyCompare(a:any, b: any){
+    return JSON.stringify(a) === JSON.stringify(b);
+  }
+
   createPhoneGroup() {
-    return this.fb.nonNullable.group({
+    const phoneGroup = this.fb.nonNullable.group({
       phoneNumber: '',
-      phoneType: ''
+      phoneType: '',
+      preferred: false
     });
+
+    phoneGroup.controls.preferred.valueChanges
+    .pipe(distinctUntilChanged(this.stringifyCompare)) //distinctUntilChanged() is an RxJS operator that suppresses (skips) emitting a value if it is the same as the previous value. If they’re the same, it does not emit the new value.
+    .subscribe((value) => {
+      if (value) {
+        //console.log(value);
+        phoneGroup.controls.phoneNumber.addValidators([Validators.required]);
+      }
+      else 
+        phoneGroup.controls.phoneNumber.removeValidators([Validators.required])
+      phoneGroup.updateValueAndValidity();
+    });
+
+    return phoneGroup;
   }
 
   addPhoneGroup(){
@@ -142,24 +166,62 @@ export class EditContactComponent implements OnInit {
   }
 
   createAddressGroup(){
-    return this.fb.nonNullable.group({
+    const addressGroup = this.fb.nonNullable.group({
         streetAddress: ['', [Validators.required, noWhiteSpaceValidator]],
         city: ['', Validators.required],
         state: ['', Validators.required],
         postalCode: ['', Validators.required],
         addressType: ['', Validators.required],
-      })
+      });
+    addressGroup.valueChanges
+    .pipe(distinctUntilChanged(this.stringifyCompare))
+      .subscribe(() => {
+        for (const controlName in addressGroup.controls) {
+          //console.log('control name', addressGroup.get(controlName));
+          addressGroup.get(controlName)?.removeValidators([Validators.required]);
+          addressGroup.get(controlName)?.updateValueAndValidity();
+        }
+      });
+    addressGroup.valueChanges
+      .pipe(debounceTime(2000), distinctUntilChanged(this.stringifyCompare))
+      .subscribe(() => {
+        for (const controlName in addressGroup.controls) {
+          addressGroup.get(controlName)?.addValidators([Validators.required]);
+          addressGroup.get(controlName)?.updateValueAndValidity();
+        }
+      });    
+    return addressGroup;
   }
 
   addAddressGroup(){
     this.contactForm.controls.addresses.controls.push(this.createAddressGroup());
   }
-  
+
+  subscribeToAddressChanges() {
+    const addressGroup = this.contactForm.controls.addresses;
+    addressGroup.valueChanges
+      .pipe(distinctUntilChanged(this.stringifyCompare))
+      .subscribe(() => {
+        for (const controlName in addressGroup.controls) {
+          console.log('control name', addressGroup.get(controlName));
+          addressGroup.get(controlName)?.removeValidators([Validators.required]);
+          addressGroup.get(controlName)?.updateValueAndValidity();
+        }
+      });
+    addressGroup.valueChanges
+      .pipe(debounceTime(2000), distinctUntilChanged(this.stringifyCompare))
+      .subscribe(() => {
+        for (const controlName in addressGroup.controls) {
+          addressGroup.get(controlName)?.addValidators([Validators.required]);
+          addressGroup.get(controlName)?.updateValueAndValidity();
+        }
+      });
+  }
+
   saveContact() {
     //this.contactForm.getRawValue() ----This will force my FormGroup to return all properties even if their associated input elements are disabled.
     // or 
     // this.contactForm.value
-
 
     this.contactsService.saveContact(this.contactForm.getRawValue()).subscribe({
       next: () => this.router.navigate(['/contacts'])

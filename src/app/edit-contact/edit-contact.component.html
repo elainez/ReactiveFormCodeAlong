@@ -32,6 +32,7 @@
           <div class="flex-group">
             <input placeholder="Phone" formControlName="phoneNumber" />
           </div>
+          <em *ngIf="phone.controls.phoneNumber.invalid">Preferred Phone Number is requiured</em>
           <div class="radio">
             <!-- <input type="radio" formControlName="phoneType" value="mobile"> Mobile
                           <input type="radio" formControlName="phoneType" value="work"> Work
@@ -40,6 +41,9 @@
               <input type="radio" [value]="type.value" formControlName="phoneType"> {{type.title}}
             </span>
           </div>
+          <span>
+            <input type="checkbox" formControlName="preferred"> Preferred
+          </span>
         </div>
       </div>
     </section>

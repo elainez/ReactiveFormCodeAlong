@@ -13,9 +13,9 @@ export class InMemoryContactsApi implements InMemoryDbService {
         dateOfBirth: new Date('1994/05/05'),
         favoritesRanking: 0,
         phones: [
-          { phoneNumber: '555-765-4321', phoneType: 'other' },
-          { phoneNumber: '335-125-5987', phoneType: 'work' },
-          { phoneNumber: '125-598-3357', phoneType: 'home' }
+          { phoneNumber: '555-765-4321', phoneType: 'other', preferred: false },
+          { phoneNumber: '335-125-5987', phoneType: 'work', preferred: false },
+          { phoneNumber: '125-598-3357', phoneType: 'home', preferred: false }
         ],
         addresses: [{
           streetAddress: '777 Whimsy Lane',
@@ -43,8 +43,8 @@ export class InMemoryContactsApi implements InMemoryDbService {
         dateOfBirth: new Date('1988/10/05'),
         favoritesRanking: 0,
         phones: [
-          { phoneNumber: '555-877-5678', phoneType: 'other' },
-          { phoneNumber: '678-555-8775', phoneType: 'work' }
+          { phoneNumber: '555-877-5678', phoneType: 'other', preferred: false },
+          { phoneNumber: '678-555-8775', phoneType: 'work', preferred:false }
         ],
         addresses: [{
           streetAddress: '543 Lullaby Lane',
@@ -72,8 +72,8 @@ export class InMemoryContactsApi implements InMemoryDbService {
         dateOfBirth: new Date('1986/11/08'),
         favoritesRanking: 1,
         phones: [
-          { phoneNumber: '555-123-4567', phoneType: 'other' },
-          { phoneNumber: '456-555-7123', phoneType: 'home' },
+          { phoneNumber: '555-123-4567', phoneType: 'other', preferred: false },
+          { phoneNumber: '456-555-7123', phoneType: 'home', preferred: false },
         ],
         addresses: [{
           streetAddress: '123 Merriment Avenue',
